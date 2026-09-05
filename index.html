@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AI Image Creator</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1224;
+      color: white;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 700px;
+      margin: auto;
+      padding: 50px 0;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .header h1 {
+      font-size: 38px;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: #aab3c7;
+      font-size: 18px;
+    }
+
+    .card {
+      background: #1d293d;
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+
+    label {
+      display: block;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      resize: vertical;
+      border: none;
+      outline: none;
+      border-radius: 18px;
+      padding: 18px;
+      font-size: 17px;
+      background: #34445a;
+      color: white;
+    }
+
+    textarea::placeholder {
+      color: #b8c0cf;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 18px;
+      margin-top: 18px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #6258ee;
+      color: white;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    #result {
+      margin-top: 25px;
+    }
+
+    .loading {
+      text-align: center;
+      background: #0d172b;
+      padding: 25px;
+      border-radius: 18px;
+      color: #cbd3e3;
+    }
+
+    .image-box {
+      text-align: center;
+      background: #0d172b;
+      padding: 15px;
+      border-radius: 20px;
+    }
+
+    .image-box img {
+      width: 100%;
+      border-radius: 15px;
+      display: block;
+    }
+
+    .download {
+      display: block;
+      text-decoration: none;
+      text-align: center;
+      background: #20a464;
+      color: white;
+      padding: 15px;
+      border-radius: 14px;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .error {
+      background: #401d27;
+      color: #ffb6c1;
+      padding: 18px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 35px 0;
+      }
+
+      .header h1 {
+        font-size: 30px;
+      }
+
+      .card {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="header">
+      <h1>✨ AI Image Creator</h1>
+      <p>Turn your imagination into images</p>
+    </div>
+
+    <div class="card">
+
+      <label for="prompt">Describe your image</label>
+
+      <textarea
+        id="prompt"
+        placeholder="Example: A futuristic city at sunset, cinematic lighting, ultra detailed..."
+      ></textarea>
+
+      <button id="generateBtn">
+        🎨 Generate Image
+      </button>
+
+      <div id="result"></div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    const button = document.getElementById("generateBtn");
+    const promptBox = document.getElementById("prompt");
+    const result = document.getElementById("result");
+
+    button.addEventListener("click", async function () {
+
+      const prompt = promptBox.value.trim();
+
+      if (!prompt) {
+        result.innerHTML = `
+          <div class="error">
+            ⚠️ Please describe the image you want to create.
+          </div>
+        `;
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "⏳ Creating Image...";
+
+      result.innerHTML = `
+        <div class="loading">
+          🎨 Creating your image...<br><br>
+          Please wait.
+        </div>
+      `;
+
+      try {
+
+        const encodedPrompt = encodeURIComponent(prompt);
+
+        const imageUrl =
+          "https://image.pollinations.ai/prompt/" +
+          encodedPrompt +
+          "?width=1024&height=1024&nologo=true";
+
+        const img = new Image();
+
+        img.onload = function () {
+
+          result.innerHTML = `
+            <div class="image-box">
+
+              <img
+                src="${imageUrl}"
+                alt="AI generated image"
+              >
+
+              <a
+                class="download"
+                href="${imageUrl}"
+                target="_blank"
+                download="ai-generated-image.jpg"
+              >
+                ⬇️ Download Image
+              </a>
+
+            </div>
+          `;
+
+          button.disabled = false;
+          button.textContent = "🎨 Generate Image";
+        };
+
+        img.onerror = function () {
+
+          result.innerHTML = `
+            <div class="error">
+              ❌ The image could not be generated.
+              <br><br>
+              Please try another prompt.
+            </div>
+          `;
+
+          button.disabled = false;
+          button.textContent = "🎨 Generate Image";
+        };
+
+        img.src = imageUrl;
+
+      } catch (error) {
+
+        result.innerHTML = `
+          <div class="error">
+            ❌ Something went wrong.
+          </div>
+        `;
+
+        button.disabled = false;
+        button.textContent = "🎨 Generate Image";
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>
