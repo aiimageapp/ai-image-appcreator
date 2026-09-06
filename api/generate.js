@@ -3,7 +3,17 @@ import { InferenceClient } from "@huggingface/inference";
 const hf = new InferenceClient(process.env.HF_TOKEN);
 
 export default async function handler(req, res) {
-  // Allow only POST
+  // CORS
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // Allow browser preflight request
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
+  // Only allow POST for image generation
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed"
@@ -19,7 +29,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // Choose image dimensions from the selected ratio
     let width = 1024;
     let height = 1024;
 
