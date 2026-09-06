@@ -33,7 +33,7 @@ body{
   min-height:100vh;
 }
 
-button,textarea{font:inherit}
+button,textarea,input{font:inherit}
 button{cursor:pointer}
 
 .app{
@@ -220,12 +220,6 @@ textarea::placeholder{
   font-size:11px;
 }
 
-.quick button:hover{
-  border-color:#7659d8;
-  color:white;
-}
-
-/* ENHANCER */
 .enhancer{
   margin-top:12px;
   padding:13px;
@@ -275,7 +269,6 @@ textarea::placeholder{
   inset:0;
   border-radius:20px;
   background:#30333f;
-  transition:.2s;
 }
 
 .slider:before{
@@ -341,7 +334,6 @@ textarea::placeholder{
   font-weight:800;
   font-size:14px;
   background:linear-gradient(135deg,#8b5cf6,#4f46e5);
-  box-shadow:0 12px 30px rgba(99,102,241,.22);
 }
 
 .generate:disabled{
@@ -423,16 +415,6 @@ textarea::placeholder{
   margin:0 auto 15px;
 }
 
-.loading h3{
-  font-size:14px;
-  margin-bottom:5px;
-}
-
-.loading p{
-  color:var(--muted);
-  font-size:11px;
-}
-
 @keyframes spin{
   to{transform:rotate(360deg)}
 }
@@ -470,21 +452,157 @@ textarea::placeholder{
   text-overflow:ellipsis;
 }
 
-.info{
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-  padding:12px;
-  margin-top:15px;
-  background:#10131a;
+/* ASK AI */
+
+.chat-panel{
+  max-width:800px;
+  margin:auto;
+}
+
+.chat-box{
+  height:480px;
+  overflow-y:auto;
+  padding:15px;
+  background:#0b0d13;
   border:1px solid var(--border);
-  border-radius:13px;
+  border-radius:18px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.chat-welcome{
+  text-align:center;
+  margin:auto;
+  max-width:400px;
   color:#858998;
+  font-size:12px;
+  line-height:1.6;
+}
+
+.chat-welcome-icon{
+  font-size:42px;
+  margin-bottom:12px;
+}
+
+.chat-message{
+  display:flex;
+  width:100%;
+}
+
+.chat-message.user{
+  justify-content:flex-end;
+}
+
+.chat-message.ai{
+  justify-content:flex-start;
+}
+
+.chat-bubble{
+  max-width:82%;
+  padding:11px 13px;
+  border-radius:15px;
+  font-size:13px;
+  line-height:1.55;
+  white-space:pre-wrap;
+  word-wrap:break-word;
+}
+
+.chat-message.user .chat-bubble{
+  background:linear-gradient(135deg,#8b5cf6,#4f46e5);
+  color:white;
+  border-bottom-right-radius:5px;
+}
+
+.chat-message.ai .chat-bubble{
+  background:#171923;
+  border:1px solid var(--border);
+  color:#e4e5eb;
+  border-bottom-left-radius:5px;
+}
+
+.chat-input-area{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+
+.chat-input{
+  flex:1;
+  min-height:50px;
+  max-height:120px;
+  resize:none;
+  padding:14px;
+}
+
+.send-btn{
+  width:58px;
+  flex-shrink:0;
+  border:0;
+  border-radius:14px;
+  background:linear-gradient(135deg,#8b5cf6,#4f46e5);
+  color:white;
+  font-size:19px;
+  font-weight:800;
+}
+
+.send-btn:disabled{
+  opacity:.5;
+}
+
+.chat-tools{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:9px;
+}
+
+.chat-status{
+  color:#6f7380;
   font-size:10px;
-  line-height:1.5;
+}
+
+.clear-chat{
+  background:none;
+  border:0;
+  color:#777b8b;
+  font-size:10px;
+}
+
+.typing{
+  display:inline-flex;
+  gap:4px;
+}
+
+.typing span{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#999;
+  animation:typing 1s infinite;
+}
+
+.typing span:nth-child(2){
+  animation-delay:.15s;
+}
+
+.typing span:nth-child(3){
+  animation-delay:.3s;
+}
+
+@keyframes typing{
+  0%,60%,100%{
+    opacity:.3;
+    transform:translateY(0);
+  }
+  30%{
+    opacity:1;
+    transform:translateY(-3px);
+  }
 }
 
 @media(max-width:800px){
+
   .workspace{
     grid-template-columns:1fr;
   }
@@ -496,9 +614,11 @@ textarea::placeholder{
   .result{
     min-height:300px;
   }
+
 }
 
 @media(max-width:480px){
+
   .app{
     padding:12px;
   }
@@ -515,6 +635,15 @@ textarea::placeholder{
   textarea{
     min-height:145px;
   }
+
+  .chat-box{
+    height:55vh;
+  }
+
+  .chat-bubble{
+    max-width:88%;
+  }
+
 }
 </style>
 </head>
@@ -540,9 +669,11 @@ textarea::placeholder{
 <section class="hero">
   <h2>Create anything with <span class="gradient">AI</span></h2>
   <p>
-    Turn your ideas into beautiful images with a simple prompt.
+    Turn your ideas into beautiful images and chat with AI.
   </p>
 </section>
+
+<!-- IMAGE TAB -->
 
 <div id="imageTab">
 
@@ -576,8 +707,6 @@ placeholder="Example: A young African man standing in a futuristic Lagos city at
 <button data-prompt="A beautiful fantasy landscape, magical atmosphere, highly detailed">Fantasy</button>
 </div>
 
-<!-- PROMPT ENHANCER -->
-
 <div class="enhancer">
 
 <div class="enhancer-top">
@@ -605,26 +734,11 @@ Automatically adds useful visual details to your prompt.
 <div class="options" id="styles">
 
 <button class="option active" data-style="">Natural</button>
-
-<button class="option" data-style="photorealistic photography">
-Photorealistic
-</button>
-
-<button class="option" data-style="cinematic photography">
-Cinematic
-</button>
-
-<button class="option" data-style="digital art">
-Digital Art
-</button>
-
-<button class="option" data-style="3D render">
-3D
-</button>
-
-<button class="option" data-style="anime illustration">
-Anime
-</button>
+<button class="option" data-style="photorealistic photography">Photorealistic</button>
+<button class="option" data-style="cinematic photography">Cinematic</button>
+<button class="option" data-style="digital art">Digital Art</button>
+<button class="option" data-style="3D render">3D</button>
+<button class="option" data-style="anime illustration">Anime</button>
 
 </div>
 </div>
@@ -648,11 +762,6 @@ Anime
 ✨ Generate Image
 </button>
 
-<div class="info">
-<span>🔒</span>
-<span>Your API token stays on the server.</span>
-</div>
-
 </section>
 
 <section class="panel">
@@ -674,17 +783,9 @@ Anime
 
 <div class="result-actions" id="actions" style="display:none;">
 
-<button class="action" id="download">
-⬇ Download
-</button>
-
-<button class="action" id="save">
-♡ Save
-</button>
-
-<button class="action" id="newImage">
-＋ New
-</button>
+<button class="action" id="download">⬇ Download</button>
+<button class="action" id="save">♡ Save</button>
+<button class="action" id="newImage">＋ New</button>
 
 </div>
 
@@ -698,15 +799,7 @@ Anime
 
 <h3>🕘 Recent creations</h3>
 
-<button
-id="clearHistory"
-style="
-background:none;
-border:0;
-color:#777b8b;
-font-size:11px;
-"
->
+<button id="clearHistory" class="clear-chat">
 Clear
 </button>
 
@@ -717,6 +810,8 @@ Clear
 </section>
 
 </div>
+
+<!-- VIDEO TAB -->
 
 <div id="videoTab" style="display:none;">
 
@@ -734,17 +829,73 @@ Video generation is coming soon.
 
 </div>
 
+<!-- ASK AI TAB -->
+
 <div id="askTab" style="display:none;">
 
-<section class="panel" style="text-align:center;padding:50px 20px;">
+<section class="panel chat-panel">
 
-<div style="font-size:45px;margin-bottom:15px;">💬</div>
+<div class="panel-title">
 
-<h3 style="margin-bottom:8px;">Ask AI</h3>
+<h3>💬 Ask AI</h3>
 
-<p style="color:#888;font-size:13px;">
-AI chat will be added soon.
+<span id="chatStatus">
+Online
+</span>
+
+</div>
+
+<div class="chat-box" id="chatBox">
+
+<div class="chat-welcome" id="chatWelcome">
+
+<div class="chat-welcome-icon">🤖</div>
+
+<h3 style="color:#d9dae2;margin-bottom:8px;">
+How can I help?
+</h3>
+
+<p>
+Ask questions, brainstorm ideas, learn something new,
+or get help with your creative projects.
 </p>
+
+</div>
+
+</div>
+
+<div class="chat-input-area">
+
+<textarea
+id="chatInput"
+class="chat-input"
+maxlength="2000"
+placeholder="Ask AI anything..."
+></textarea>
+
+<button
+id="sendChat"
+class="send-btn"
+>
+➤
+</button>
+
+</div>
+
+<div class="chat-tools">
+
+<span class="chat-status" id="typingStatus">
+Ready
+</span>
+
+<button
+id="clearChat"
+class="clear-chat"
+>
+Clear chat
+</button>
+
+</div>
 
 </section>
 
@@ -754,8 +905,13 @@ AI chat will be added soon.
 
 <script>
 
-const API_URL =
+const IMAGE_API =
 "https://ai-image-appcreator.vercel.app/api/generate";
+
+const CHAT_API =
+"https://ai-image-appcreator.vercel.app/api/chat";
+
+/* IMAGE GENERATOR */
 
 const promptBox =
 document.getElementById("prompt");
@@ -782,19 +938,17 @@ let selectedStyle = "";
 let selectedRatio = "1:1";
 let currentImage = null;
 
-/* CHARACTER COUNT */
-
 promptBox.addEventListener("input", () => {
-count.textContent = promptBox.value.length;
+count.textContent =
+promptBox.value.length;
 });
-
-/* QUICK PROMPTS */
 
 document.querySelectorAll(".quick button").forEach(button => {
 
 button.addEventListener("click", () => {
 
-promptBox.value = button.dataset.prompt;
+promptBox.value =
+button.dataset.prompt;
 
 count.textContent =
 promptBox.value.length;
@@ -804,8 +958,6 @@ promptBox.focus();
 });
 
 });
-
-/* STYLE */
 
 document.querySelectorAll("#styles .option")
 .forEach(button => {
@@ -827,8 +979,6 @@ button.dataset.style;
 
 });
 
-/* RATIO */
-
 document.querySelectorAll("#ratios .option")
 .forEach(button => {
 
@@ -849,8 +999,6 @@ button.dataset.ratio;
 
 });
 
-/* PROMPT ENHANCER */
-
 function enhancePromptText(prompt){
 
 if(!enhancerToggle.checked){
@@ -868,8 +1016,6 @@ balanced colors,
 high quality`;
 
 }
-
-/* GENERATE */
 
 generateBtn.addEventListener(
 "click",
@@ -890,6 +1036,7 @@ alert(
 promptBox.focus();
 
 return;
+
 }
 
 let finalPrompt =
@@ -933,13 +1080,12 @@ actions.style.display =
 try{
 
 const response =
-await fetch(API_URL, {
+await fetch(IMAGE_API, {
 
 method:"POST",
 
 headers:{
-"Content-Type":
-"application/json"
+"Content-Type":"application/json"
 },
 
 body:JSON.stringify({
@@ -1011,17 +1157,11 @@ result.className =
 
 result.innerHTML = `
 
-<div class="empty-icon">
-⚠️
-</div>
+<div class="empty-icon">⚠️</div>
 
-<h3>
-Generation failed
-</h3>
+<h3>Generation failed</h3>
 
-<p>
-${escapeHtml(error.message)}
-</p>
+<p>${escapeHtml(error.message)}</p>
 
 `;
 
@@ -1039,8 +1179,6 @@ generateBtn.textContent =
 }
 
 }
-
-/* DOWNLOAD */
 
 document
 .getElementById("download")
@@ -1065,8 +1203,6 @@ link.remove();
 
 });
 
-/* SAVE */
-
 document
 .getElementById("save")
 .addEventListener("click",() => {
@@ -1084,8 +1220,6 @@ alert(
 
 });
 
-/* NEW */
-
 document
 .getElementById("newImage")
 .addEventListener("click",() => {
@@ -1100,17 +1234,11 @@ result.className =
 
 result.innerHTML = `
 
-<div class="empty-icon">
-✦
-</div>
+<div class="empty-icon">✦</div>
 
-<h3>
-Your creation will appear here
-</h3>
+<h3>Your creation will appear here</h3>
 
-<p>
-Write a prompt and tap Generate Image.
-</p>
+<p>Write a prompt and tap Generate Image.</p>
 
 `;
 
@@ -1123,8 +1251,6 @@ statusText.textContent =
 promptBox.focus();
 
 });
-
-/* HISTORY */
 
 function saveToHistory(
 image,
@@ -1184,8 +1310,7 @@ font-size:11px;
 padding:10px;
 ">
 
-Your generated images
-will appear here.
+Your generated images will appear here.
 
 </div>
 
@@ -1215,13 +1340,9 @@ ${escapeHtml(item.prompt)}
 
 }
 
-/* CLEAR HISTORY */
-
 document
 .getElementById("clearHistory")
-.addEventListener(
-"click",
-() => {
+.addEventListener("click",() => {
 
 localStorage.removeItem(
 "aiCreatorHistory"
@@ -1275,29 +1396,13 @@ selected === "ask"
 
 });
 
-/* SECURITY */
+/* ASK AI */
 
-function escapeHtml(text){
+const chatBox =
+document.getElementById("chatBox");
 
-return String(text)
+const chatInput =
+document.getElementById("chatInput");
 
-.replace(/&/g,"&amp;")
-
-.replace(/</g,"&lt;")
-
-.replace(/>/g,"&gt;")
-
-.replace(/"/g,"&quot;")
-
-.replace(/'/g,"&#039;");
-
-}
-
-/* LOAD HISTORY */
-
-renderHistory();
-
-</script>
-
-</body>
-</html>
+const sendChat =
+docum
