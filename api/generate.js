@@ -1,14 +1,9 @@
+import { InferenceClient } from "@huggingface/inference";
+
+const hf = new InferenceClient(process.env.HF_TOKEN);
+
 export default async function handler(req, res) {
-  const allowedOrigin = "https://aiimageapp.github.io";
-
-  res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  if (req.method === "OPTIONS") {
-    return res.status(204).end();
-  }
-
+  // Allow only POST
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed"
@@ -16,52 +11,54 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { prompt } = req.body || {};
+    const { prompt, ratio } = req.body || {};
 
     if (!prompt || !prompt.trim()) {
       return res.status(400).json({
-        error: "Prompt is required"
+        error: "Please enter an image prompt."
       });
     }
 
-    if (!process.env.HF_TOKEN) {
-      return res.status(500).json({
-        error: "HF_TOKEN is missing from Vercel."
-      });
+    // Choose image dimensions from the selected ratio
+    let width = 1024;
+    let height = 1024;
+
+    if (ratio === "16:9") {
+      width = 1024;
+      height = 576;
+    } else if (ratio === "9:16") {
+      width = 576;
+      height = 1024;
+    } else if (ratio === "4:3") {
+      width = 1024;
+      height = 768;
+    } else if (ratio === "3:4") {
+      width = 768;
+      height = 1024;
     }
 
-    const response = await fetch(
-      "https://router.huggingface.co/fal-ai/black-forest-labs/FLUX.1-schnell",
-      {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${process.env.HF_TOKEN}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          prompt: prompt.trim()
-        })
+    const imageBlob = await hf.textToImage({
+      model: "black-forest-labs/FLUX.1-dev",
+      inputs: prompt.trim(),
+      provider: "auto",
+      parameters: {
+        width,
+        height
       }
-    );
+    });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-
-      return res.status(response.status).json({
-        error: errorText || "Hugging Face image generation failed."
-      });
-    }
-
-    const image = await response.arrayBuffer();
+    const buffer = Buffer.from(await imageBlob.arrayBuffer());
 
     res.setHeader("Content-Type", "image/png");
-    res.setHeader("Cache-Control", "no-store");
+    res.setHeader("Content-Length", buffer.length);
 
-    return res.status(200).send(Buffer.from(image));
+    return res.status(200).send(buffer);
 
   } catch (error) {
+    console.error("Hugging Face error:", error);
+
     return res.status(500).json({
-      error: error.message || "Server error."
+      error: error?.message || "Image generation failed."
     });
   }
 }
