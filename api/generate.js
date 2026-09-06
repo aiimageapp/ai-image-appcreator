@@ -16,43 +16,54 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { prompt } = req.body;
+    const { prompt } = req.body || {};
 
-    if (!prompt) {
+    if (!prompt || !prompt.trim()) {
       return res.status(400).json({
         error: "Prompt is required"
       });
     }
 
+    if (!process.env.HF_TOKEN) {
+      return res.status(500).json({
+        error: "HF_TOKEN is not configured in Vercel."
+      });
+    }
+
     const response = await fetch(
-      "https://api.openai.com/v1/images/generations",
+      "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell",
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+          "Authorization": `Bearer ${process.env.HF_TOKEN}`,
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "gpt-image-2",
-          prompt: prompt,
-          size: "1024x1024"
+          inputs: prompt.trim()
         })
       }
     );
 
-    const data = await response.json();
-
     if (!response.ok) {
+      const errorText = await response.text();
+
       return res.status(response.status).json({
-        error: data.error?.message || "Image generation failed"
+        error: errorText || "Image generation failed."
       });
     }
 
-    return res.status(200).json(data);
+    const imageBuffer = Buffer.from(
+      await response.arrayBuffer()
+    );
+
+    res.setHeader("Content-Type", "image/png");
+    res.setHeader("Cache-Control", "no-store");
+
+    return res.status(200).send(imageBuffer);
 
   } catch (error) {
     return res.status(500).json({
-      error: error.message || "Server error"
+      error: error.message || "Server error."
     });
   }
 }
