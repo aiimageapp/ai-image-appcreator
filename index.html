@@ -22,7 +22,6 @@
   --muted:#969aaa;
   --accent:#8b5cf6;
   --accent2:#6366f1;
-  --danger:#ef4444;
 }
 
 body{
@@ -34,14 +33,8 @@ body{
   min-height:100vh;
 }
 
-button,
-textarea{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
+button,textarea{font:inherit}
+button{cursor:pointer}
 
 .app{
   width:100%;
@@ -50,7 +43,6 @@ button{
   padding:18px;
 }
 
-/* HEADER */
 .header{
   display:flex;
   align-items:center;
@@ -72,12 +64,10 @@ button{
   place-items:center;
   background:linear-gradient(135deg,#8b5cf6,#4f46e5);
   font-size:20px;
-  box-shadow:0 8px 30px rgba(99,102,241,.25);
 }
 
 .brand h1{
   font-size:19px;
-  letter-spacing:-.4px;
 }
 
 .badge{
@@ -90,7 +80,6 @@ button{
   border:1px solid #23432f;
 }
 
-/* TABS */
 .tabs{
   display:flex;
   gap:7px;
@@ -117,7 +106,6 @@ button{
   background:#242735;
 }
 
-/* HERO */
 .hero{
   text-align:center;
   margin:10px auto 25px;
@@ -145,7 +133,6 @@ button{
   line-height:1.6;
 }
 
-/* WORKSPACE */
 .workspace{
   display:grid;
   grid-template-columns:minmax(0,1fr) 330px;
@@ -176,14 +163,13 @@ button{
   font-size:11px;
 }
 
-/* PROMPT */
 .prompt-box{
   position:relative;
 }
 
 textarea{
   width:100%;
-  min-height:170px;
+  min-height:160px;
   resize:vertical;
   padding:17px;
   border-radius:16px;
@@ -193,7 +179,6 @@ textarea{
   outline:none;
   line-height:1.6;
   font-size:14px;
-  transition:.2s;
 }
 
 textarea:focus{
@@ -213,7 +198,6 @@ textarea::placeholder{
   font-size:10px;
 }
 
-/* QUICK PROMPTS */
 .quick{
   display:flex;
   gap:7px;
@@ -241,7 +225,79 @@ textarea::placeholder{
   color:white;
 }
 
-/* CONTROLS */
+/* ENHANCER */
+.enhancer{
+  margin-top:12px;
+  padding:13px;
+  border:1px solid #302c49;
+  background:linear-gradient(
+    135deg,
+    rgba(139,92,246,.09),
+    rgba(99,102,241,.05)
+  );
+  border-radius:15px;
+}
+
+.enhancer-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.enhancer-title{
+  font-size:12px;
+  font-weight:800;
+}
+
+.enhancer-desc{
+  color:#858999;
+  font-size:10px;
+  margin-top:4px;
+  line-height:1.4;
+}
+
+.toggle{
+  position:relative;
+  width:42px;
+  height:23px;
+  flex-shrink:0;
+}
+
+.toggle input{
+  opacity:0;
+  width:0;
+  height:0;
+}
+
+.slider{
+  position:absolute;
+  inset:0;
+  border-radius:20px;
+  background:#30333f;
+  transition:.2s;
+}
+
+.slider:before{
+  content:"";
+  position:absolute;
+  width:17px;
+  height:17px;
+  left:3px;
+  top:3px;
+  border-radius:50%;
+  background:white;
+  transition:.2s;
+}
+
+.toggle input:checked + .slider{
+  background:#7c3aed;
+}
+
+.toggle input:checked + .slider:before{
+  transform:translateX(19px);
+}
+
 .control-section{
   margin-top:20px;
 }
@@ -275,7 +331,6 @@ textarea::placeholder{
   color:white;
 }
 
-/* GENERATE */
 .generate{
   width:100%;
   margin-top:20px;
@@ -287,20 +342,13 @@ textarea::placeholder{
   font-size:14px;
   background:linear-gradient(135deg,#8b5cf6,#4f46e5);
   box-shadow:0 12px 30px rgba(99,102,241,.22);
-  transition:.2s;
-}
-
-.generate:hover{
-  transform:translateY(-1px);
 }
 
 .generate:disabled{
   opacity:.65;
   cursor:not-allowed;
-  transform:none;
 }
 
-/* RESULT */
 .result{
   min-height:360px;
   display:flex;
@@ -360,7 +408,6 @@ textarea::placeholder{
   font-weight:700;
 }
 
-/* LOADING */
 .loading{
   text-align:center;
   padding:30px;
@@ -390,7 +437,6 @@ textarea::placeholder{
   to{transform:rotate(360deg)}
 }
 
-/* HISTORY */
 .history{
   margin-top:20px;
 }
@@ -424,7 +470,6 @@ textarea::placeholder{
   text-overflow:ellipsis;
 }
 
-/* INFO */
 .info{
   display:flex;
   gap:10px;
@@ -439,7 +484,6 @@ textarea::placeholder{
   line-height:1.5;
 }
 
-/* MOBILE */
 @media(max-width:800px){
   .workspace{
     grid-template-columns:1fr;
@@ -479,459 +523,780 @@ textarea::placeholder{
 
 <div class="app">
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="brand">
-      <div class="logo">✦</div>
-      <h1>AI Creator Studio</h1>
-      <span class="badge">FREE</span>
-    </div>
-  </header>
-
-  <!-- TABS -->
-  <div class="tabs">
-    <button class="tab active" data-tab="image">🎨 Image</button>
-    <button class="tab" data-tab="video">🎬 Video</button>
-    <button class="tab" data-tab="ask">💬 Ask AI</button>
+<header class="header">
+  <div class="brand">
+    <div class="logo">✦</div>
+    <h1>AI Creator Studio</h1>
+    <span class="badge">FREE</span>
   </div>
+</header>
 
-  <!-- HERO -->
-  <section class="hero">
-    <h2>Create anything with <span class="gradient">AI</span></h2>
-    <p>
-      Turn your ideas into beautiful images with a simple prompt.
-      Describe what you imagine and let AI create it.
-    </p>
-  </section>
+<div class="tabs">
+  <button class="tab active" data-tab="image">🎨 Image</button>
+  <button class="tab" data-tab="video">🎬 Video</button>
+  <button class="tab" data-tab="ask">💬 Ask AI</button>
+</div>
 
-  <!-- IMAGE WORKSPACE -->
-  <div id="imageTab">
+<section class="hero">
+  <h2>Create anything with <span class="gradient">AI</span></h2>
+  <p>
+    Turn your ideas into beautiful images with a simple prompt.
+  </p>
+</section>
 
-    <div class="workspace">
+<div id="imageTab">
 
-      <!-- LEFT -->
-      <section class="panel">
+<div class="workspace">
 
-        <div class="panel-title">
-          <h3>✨ Describe your image</h3>
-          <span>Text to Image</span>
-        </div>
+<section class="panel">
 
-        <div class="prompt-box">
-          <textarea
-            id="prompt"
-            maxlength="1200"
-            placeholder="Example: A cinematic portrait of a young African man wearing a black jacket, standing in a futuristic Lagos city at night, neon lights, realistic photography..."
-          ></textarea>
+<div class="panel-title">
+  <h3>✨ Describe your image</h3>
+  <span>Text to Image</span>
+</div>
 
-          <div class="char">
-            <span id="count">0</span>/1200
-          </div>
-        </div>
+<div class="prompt-box">
 
-        <div class="quick">
-          <button data-prompt="A cinematic portrait, dramatic lighting, ultra realistic photography">Portrait</button>
-          <button data-prompt="A futuristic African city at night, neon lights, cinematic atmosphere">Futuristic</button>
-          <button data-prompt="A luxury product advertisement, studio lighting, premium commercial photography">Product Ad</button>
-          <button data-prompt="A beautiful fantasy landscape, magical atmosphere, highly detailed">Fantasy</button>
-        </div>
+<textarea
+id="prompt"
+maxlength="1200"
+placeholder="Example: A young African man standing in a futuristic Lagos city at night..."
+></textarea>
 
-        <!-- STYLE -->
-        <div class="control-section">
-          <span class="label">Visual style</span>
+<div class="char">
+<span id="count">0</span>/1200
+</div>
 
-          <div class="options" id="styles">
-            <button class="option active" data-style="">Natural</button>
-            <button class="option" data-style="photorealistic photography">Photorealistic</button>
-            <button class="option" data-style="cinematic photography">Cinematic</button>
-            <button class="option" data-style="digital art">Digital Art</button>
-            <button class="option" data-style="3D render">3D</button>
-            <button class="option" data-style="anime illustration">Anime</button>
-          </div>
-        </div>
+</div>
 
-        <!-- RATIO -->
-        <div class="control-section">
-          <span class="label">Aspect ratio</span>
+<div class="quick">
+<button data-prompt="A cinematic portrait of a person, dramatic lighting, professional photography">Portrait</button>
+<button data-prompt="A futuristic African city at night, neon lights, cinematic atmosphere">Futuristic</button>
+<button data-prompt="A luxury product advertisement, studio lighting, premium commercial photography">Product</button>
+<button data-prompt="A beautiful fantasy landscape, magical atmosphere, highly detailed">Fantasy</button>
+</div>
 
-          <div class="options" id="ratios">
-            <button class="option active" data-ratio="1:1">1:1</button>
-            <button class="option" data-ratio="4:3">4:3</button>
-            <button class="option" data-ratio="3:4">3:4</button>
-            <button class="option" data-ratio="16:9">16:9</button>
-            <button class="option" data-ratio="9:16">9:16</button>
-          </div>
-        </div>
+<!-- PROMPT ENHANCER -->
 
-        <button class="generate" id="generate">
-          ✨ Generate Image
-        </button>
+<div class="enhancer">
 
-        <div class="info">
-          <span>🔒</span>
-          <span>Your Hugging Face API token stays on the server. It is never placed inside this page.</span>
-        </div>
+<div class="enhancer-top">
 
-      </section>
+<div>
+<div class="enhancer-title">✨ AI Prompt Enhancer</div>
+<div class="enhancer-desc">
+Automatically adds useful visual details to your prompt.
+</div>
+</div>
 
-      <!-- RIGHT -->
-      <section class="panel">
+<label class="toggle">
+<input type="checkbox" id="enhancerToggle" checked>
+<span class="slider"></span>
+</label>
 
-        <div class="panel-title">
-          <h3>🖼️ Result</h3>
-          <span id="status">Ready</span>
-        </div>
+</div>
 
-        <div class="result empty" id="result">
-          <div class="empty-icon">✦</div>
-          <h3>Your creation will appear here</h3>
-          <p>Write a prompt and tap Generate Image.</p>
-        </div>
+</div>
 
-        <div class="result-actions" id="actions" style="display:none;">
-          <button class="action" id="download">⬇ Download</button>
-          <button class="action" id="save">♡ Save</button>
-          <button class="action" id="newImage">＋ New</button>
-        </div>
+<div class="control-section">
 
-      </section>
+<span class="label">Visual style</span>
 
-    </div>
+<div class="options" id="styles">
 
-    <!-- HISTORY -->
-    <section class="panel history">
-      <div class="panel-title">
-        <h3>🕘 Recent creations</h3>
-        <span id="clearHistory">Clear</span>
-      </div>
+<button class="option active" data-style="">Natural</button>
 
-      <div class="history-grid" id="historyGrid">
-        <div style="color:#6f7380;font-size:11px;padding:10px;">
-          Your generated images will appear here.
-        </div>
-      </div>
-    </section>
+<button class="option" data-style="photorealistic photography">
+Photorealistic
+</button>
 
-  </div>
+<button class="option" data-style="cinematic photography">
+Cinematic
+</button>
 
-  <!-- VIDEO TAB -->
-  <div id="videoTab" style="display:none;">
-    <section class="panel" style="text-align:center;padding:50px 20px;">
-      <div style="font-size:45px;margin-bottom:15px;">🎬</div>
-      <h3 style="margin-bottom:8px;">AI Video</h3>
-      <p style="color:#888;font-size:13px;">
-        Video generation is coming soon.
-      </p>
-    </section>
-  </div>
+<button class="option" data-style="digital art">
+Digital Art
+</button>
 
-  <!-- ASK AI TAB -->
-  <div id="askTab" style="display:none;">
-    <section class="panel" style="text-align:center;padding:50px 20px;">
-      <div style="font-size:45px;margin-bottom:15px;">💬</div>
-      <h3 style="margin-bottom:8px;">Ask AI</h3>
-      <p style="color:#888;font-size:13px;">
-        AI chat will be added soon.
-      </p>
-    </section>
-  </div>
+<button class="option" data-style="3D render">
+3D
+</button>
+
+<button class="option" data-style="anime illustration">
+Anime
+</button>
+
+</div>
+</div>
+
+<div class="control-section">
+
+<span class="label">Aspect ratio</span>
+
+<div class="options" id="ratios">
+
+<button class="option active" data-ratio="1:1">1:1</button>
+<button class="option" data-ratio="4:3">4:3</button>
+<button class="option" data-ratio="3:4">3:4</button>
+<button class="option" data-ratio="16:9">16:9</button>
+<button class="option" data-ratio="9:16">9:16</button>
+
+</div>
+</div>
+
+<button class="generate" id="generate">
+✨ Generate Image
+</button>
+
+<div class="info">
+<span>🔒</span>
+<span>Your API token stays on the server.</span>
+</div>
+
+</section>
+
+<section class="panel">
+
+<div class="panel-title">
+<h3>🖼️ Result</h3>
+<span id="status">Ready</span>
+</div>
+
+<div class="result empty" id="result">
+
+<div class="empty-icon">✦</div>
+
+<h3>Your creation will appear here</h3>
+
+<p>Write a prompt and tap Generate Image.</p>
+
+</div>
+
+<div class="result-actions" id="actions" style="display:none;">
+
+<button class="action" id="download">
+⬇ Download
+</button>
+
+<button class="action" id="save">
+♡ Save
+</button>
+
+<button class="action" id="newImage">
+＋ New
+</button>
+
+</div>
+
+</section>
+
+</div>
+
+<section class="panel history">
+
+<div class="panel-title">
+
+<h3>🕘 Recent creations</h3>
+
+<button
+id="clearHistory"
+style="
+background:none;
+border:0;
+color:#777b8b;
+font-size:11px;
+"
+>
+Clear
+</button>
+
+</div>
+
+<div class="history-grid" id="historyGrid"></div>
+
+</section>
+
+</div>
+
+<div id="videoTab" style="display:none;">
+
+<section class="panel" style="text-align:center;padding:50px 20px;">
+
+<div style="font-size:45px;margin-bottom:15px;">🎬</div>
+
+<h3 style="margin-bottom:8px;">AI Video</h3>
+
+<p style="color:#888;font-size:13px;">
+Video generation is coming soon.
+</p>
+
+</section>
+
+</div>
+
+<div id="askTab" style="display:none;">
+
+<section class="panel" style="text-align:center;padding:50px 20px;">
+
+<div style="font-size:45px;margin-bottom:15px;">💬</div>
+
+<h3 style="margin-bottom:8px;">Ask AI</h3>
+
+<p style="color:#888;font-size:13px;">
+AI chat will be added soon.
+</p>
+
+</section>
+
+</div>
 
 </div>
 
 <script>
-const API_URL =
-  "https://ai-image-appcreator.vercel.app/api/generate";
 
-const promptBox = document.getElementById("prompt");
-const count = document.getElementById("count");
-const generateBtn = document.getElementById("generate");
-const result = document.getElementById("result");
-const actions = document.getElementById("actions");
-const statusText = document.getElementById("status");
+const API_URL =
+"https://ai-image-appcreator.vercel.app/api/generate";
+
+const promptBox =
+document.getElementById("prompt");
+
+const count =
+document.getElementById("count");
+
+const generateBtn =
+document.getElementById("generate");
+
+const result =
+document.getElementById("result");
+
+const actions =
+document.getElementById("actions");
+
+const statusText =
+document.getElementById("status");
+
+const enhancerToggle =
+document.getElementById("enhancerToggle");
 
 let selectedStyle = "";
 let selectedRatio = "1:1";
 let currentImage = null;
 
 /* CHARACTER COUNT */
+
 promptBox.addEventListener("input", () => {
-  count.textContent = promptBox.value.length;
+count.textContent = promptBox.value.length;
 });
 
 /* QUICK PROMPTS */
+
 document.querySelectorAll(".quick button").forEach(button => {
-  button.addEventListener("click", () => {
-    promptBox.value = button.dataset.prompt;
-    count.textContent = promptBox.value.length;
-    promptBox.focus();
-  });
+
+button.addEventListener("click", () => {
+
+promptBox.value = button.dataset.prompt;
+
+count.textContent =
+promptBox.value.length;
+
+promptBox.focus();
+
+});
+
 });
 
 /* STYLE */
-document.querySelectorAll("#styles .option").forEach(button => {
-  button.addEventListener("click", () => {
 
-    document
-      .querySelectorAll("#styles .option")
-      .forEach(x => x.classList.remove("active"));
+document.querySelectorAll("#styles .option")
+.forEach(button => {
 
-    button.classList.add("active");
-    selectedStyle = button.dataset.style;
-  });
+button.addEventListener("click", () => {
+
+document
+.querySelectorAll("#styles .option")
+.forEach(x =>
+x.classList.remove("active")
+);
+
+button.classList.add("active");
+
+selectedStyle =
+button.dataset.style;
+
+});
+
 });
 
 /* RATIO */
-document.querySelectorAll("#ratios .option").forEach(button => {
-  button.addEventListener("click", () => {
 
-    document
-      .querySelectorAll("#ratios .option")
-      .forEach(x => x.classList.remove("active"));
+document.querySelectorAll("#ratios .option")
+.forEach(button => {
 
-    button.classList.add("active");
-    selectedRatio = button.dataset.ratio;
-  });
+button.addEventListener("click", () => {
+
+document
+.querySelectorAll("#ratios .option")
+.forEach(x =>
+x.classList.remove("active")
+);
+
+button.classList.add("active");
+
+selectedRatio =
+button.dataset.ratio;
+
 });
 
+});
+
+/* PROMPT ENHANCER */
+
+function enhancePromptText(prompt){
+
+if(!enhancerToggle.checked){
+return prompt;
+}
+
+return `${prompt},
+highly detailed,
+professional composition,
+natural lighting,
+realistic textures,
+sharp focus,
+beautiful visual quality,
+balanced colors,
+high quality`;
+
+}
+
 /* GENERATE */
-generateBtn.addEventListener("click", createImage);
+
+generateBtn.addEventListener(
+"click",
+createImage
+);
 
 async function createImage(){
 
-  const prompt = promptBox.value.trim();
+const prompt =
+promptBox.value.trim();
 
-  if(!prompt){
-    alert("Please describe the image you want to create.");
-    promptBox.focus();
-    return;
-  }
+if(!prompt){
 
-  let finalPrompt = prompt;
+alert(
+"Please describe the image you want to create."
+);
 
-  if(selectedStyle){
-    finalPrompt += ", " + selectedStyle;
-  }
+promptBox.focus();
 
-  generateBtn.disabled = true;
-  generateBtn.textContent = "⏳ Creating...";
-  statusText.textContent = "Generating";
+return;
+}
 
-  result.className = "result";
-  result.innerHTML = `
-    <div class="loading">
-      <div class="spinner"></div>
-      <h3>Creating your image...</h3>
-      <p>AI is turning your idea into an image.</p>
-    </div>
-  `;
+let finalPrompt =
+enhancePromptText(prompt);
 
-  actions.style.display = "none";
+if(selectedStyle){
 
-  try{
+finalPrompt +=
+", " + selectedStyle;
 
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        prompt: finalPrompt,
-        ratio: selectedRatio
-      })
-    });
+}
 
-    if(!response.ok){
+generateBtn.disabled = true;
 
-      let message = "Image generation failed.";
+generateBtn.textContent =
+"⏳ Creating...";
 
-      try{
-        const data = await response.json();
+statusText.textContent =
+"Generating";
 
-        if(data.error){
-          message = data.error;
-        }
-      }catch(e){}
+result.className =
+"result";
 
-      throw new Error(message);
-    }
+result.innerHTML = `
 
-    const blob = await response.blob();
+<div class="loading">
 
-    currentImage = URL.createObjectURL(blob);
+<div class="spinner"></div>
 
-    result.className = "result";
+<h3>Creating your image...</h3>
 
-    result.innerHTML = `
-      <img
-        src="${currentImage}"
-        alt="AI generated image"
-      />
-    `;
+<p>AI is turning your idea into an image.</p>
 
-    actions.style.display = "flex";
-    statusText.textContent = "Complete";
+</div>
 
-    saveToHistory(currentImage, prompt);
+`;
 
-  }catch(error){
+actions.style.display =
+"none";
 
-    console.error(error);
+try{
 
-    result.className = "result empty";
+const response =
+await fetch(API_URL, {
 
-    result.innerHTML = `
-      <div class="empty-icon">⚠️</div>
-      <h3>Generation failed</h3>
-      <p>${escapeHtml(error.message)}</p>
-    `;
+method:"POST",
 
-    statusText.textContent = "Error";
+headers:{
+"Content-Type":
+"application/json"
+},
 
-  }finally{
+body:JSON.stringify({
 
-    generateBtn.disabled = false;
-    generateBtn.textContent = "✨ Generate Image";
-  }
+prompt:finalPrompt,
+
+ratio:selectedRatio
+
+})
+
+});
+
+if(!response.ok){
+
+let message =
+"Image generation failed.";
+
+try{
+
+const data =
+await response.json();
+
+if(data.error){
+message =
+data.error;
+}
+
+}catch(e){}
+
+throw new Error(message);
+
+}
+
+const blob =
+await response.blob();
+
+currentImage =
+URL.createObjectURL(blob);
+
+result.className =
+"result";
+
+result.innerHTML = `
+
+<img
+src="${currentImage}"
+alt="AI generated image"
+/>
+
+`;
+
+actions.style.display =
+"flex";
+
+statusText.textContent =
+"Complete";
+
+saveToHistory(
+currentImage,
+prompt
+);
+
+}catch(error){
+
+console.error(error);
+
+result.className =
+"result empty";
+
+result.innerHTML = `
+
+<div class="empty-icon">
+⚠️
+</div>
+
+<h3>
+Generation failed
+</h3>
+
+<p>
+${escapeHtml(error.message)}
+</p>
+
+`;
+
+statusText.textContent =
+"Error";
+
+}finally{
+
+generateBtn.disabled =
+false;
+
+generateBtn.textContent =
+"✨ Generate Image";
+
+}
+
 }
 
 /* DOWNLOAD */
-document.getElementById("download").addEventListener("click", () => {
 
-  if(!currentImage) return;
+document
+.getElementById("download")
+.addEventListener("click",() => {
 
-  const link = document.createElement("a");
+if(!currentImage)return;
 
-  link.href = currentImage;
-  link.download = "ai-creator-image.png";
+const link =
+document.createElement("a");
 
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
+link.href =
+currentImage;
+
+link.download =
+"ai-creator-image.png";
+
+document.body.appendChild(link);
+
+link.click();
+
+link.remove();
+
 });
 
 /* SAVE */
-document.getElementById("save").addEventListener("click", () => {
 
-  if(!currentImage) return;
+document
+.getElementById("save")
+.addEventListener("click",() => {
 
-  saveToHistory(currentImage, promptBox.value.trim());
+if(!currentImage)return;
 
-  alert("Image saved to your recent creations.");
+saveToHistory(
+currentImage,
+promptBox.value.trim()
+);
+
+alert(
+"Image saved to your recent creations."
+);
+
 });
 
 /* NEW */
-document.getElementById("newImage").addEventListener("click", () => {
 
-  promptBox.value = "";
-  count.textContent = "0";
+document
+.getElementById("newImage")
+.addEventListener("click",() => {
 
-  result.className = "result empty";
+promptBox.value = "";
 
-  result.innerHTML = `
-    <div class="empty-icon">✦</div>
-    <h3>Your creation will appear here</h3>
-    <p>Write a prompt and tap Generate Image.</p>
-  `;
+count.textContent =
+"0";
 
-  actions.style.display = "none";
-  statusText.textContent = "Ready";
+result.className =
+"result empty";
 
-  promptBox.focus();
+result.innerHTML = `
+
+<div class="empty-icon">
+✦
+</div>
+
+<h3>
+Your creation will appear here
+</h3>
+
+<p>
+Write a prompt and tap Generate Image.
+</p>
+
+`;
+
+actions.style.display =
+"none";
+
+statusText.textContent =
+"Ready";
+
+promptBox.focus();
+
 });
 
 /* HISTORY */
-function saveToHistory(image, prompt){
 
-  let history =
-    JSON.parse(localStorage.getItem("aiCreatorHistory") || "[]");
+function saveToHistory(
+image,
+prompt
+){
 
-  history.unshift({
-    image,
-    prompt,
-    date: Date.now()
-  });
+let history =
+JSON.parse(
+localStorage.getItem(
+"aiCreatorHistory"
+) || "[]"
+);
 
-  history = history.slice(0, 6);
+history.unshift({
 
-  localStorage.setItem(
-    "aiCreatorHistory",
-    JSON.stringify(history)
-  );
+image:image,
 
-  renderHistory();
+prompt:prompt,
+
+date:Date.now()
+
+});
+
+history =
+history.slice(0,6);
+
+localStorage.setItem(
+"aiCreatorHistory",
+JSON.stringify(history)
+);
+
+renderHistory();
+
 }
 
 function renderHistory(){
 
-  const grid = document.getElementById("historyGrid");
+const grid =
+document.getElementById(
+"historyGrid"
+);
 
-  let history =
-    JSON.parse(localStorage.getItem("aiCreatorHistory") || "[]");
+let history =
+JSON.parse(
+localStorage.getItem(
+"aiCreatorHistory"
+) || "[]"
+);
 
-  if(!history.length){
+if(!history.length){
 
-    grid.innerHTML = `
-      <div style="color:#6f7380;font-size:11px;padding:10px;">
-        Your generated images will appear here.
-      </div>
-    `;
+grid.innerHTML = `
 
-    return;
-  }
+<div style="
+color:#6f7380;
+font-size:11px;
+padding:10px;
+">
 
-  grid.innerHTML = history.map(item => `
-    <div class="history-card">
-      <img src="${item.image}" alt="Saved creation">
-      <p>${escapeHtml(item.prompt)}</p>
-    </div>
-  `).join("");
+Your generated images
+will appear here.
+
+</div>
+
+`;
+
+return;
+
 }
 
-document.getElementById("clearHistory").addEventListener("click", () => {
+grid.innerHTML =
+history.map(item => `
 
-  localStorage.removeItem("aiCreatorHistory");
-  renderHistory();
+<div class="history-card">
+
+<img
+src="${item.image}"
+alt="Saved creation"
+>
+
+<p>
+${escapeHtml(item.prompt)}
+</p>
+
+</div>
+
+`).join("");
+
+}
+
+/* CLEAR HISTORY */
+
+document
+.getElementById("clearHistory")
+.addEventListener(
+"click",
+() => {
+
+localStorage.removeItem(
+"aiCreatorHistory"
+);
+
+renderHistory();
 
 });
 
 /* TABS */
-document.querySelectorAll(".tab").forEach(tab => {
 
-  tab.addEventListener("click", () => {
+document
+.querySelectorAll(".tab")
+.forEach(tab => {
 
-    document
-      .querySelectorAll(".tab")
-      .forEach(x => x.classList.remove("active"));
+tab.addEventListener("click",() => {
 
-    tab.classList.add("active");
+document
+.querySelectorAll(".tab")
+.forEach(x =>
+x.classList.remove("active")
+);
 
-    const selected = tab.dataset.tab;
+tab.classList.add("active");
 
-    document.getElementById("imageTab").style.display =
-      selected === "image" ? "block" : "none";
+const selected =
+tab.dataset.tab;
 
-    document.getElementById("videoTab").style.display =
-      selected === "video" ? "block" : "none";
+document.getElementById(
+"imageTab"
+).style.display =
+selected === "image"
+? "block"
+: "none";
 
-    document.getElementById("askTab").style.display =
-      selected === "ask" ? "block" : "none";
-  });
+document.getElementById(
+"videoTab"
+).style.display =
+selected === "video"
+? "block"
+: "none";
+
+document.getElementById(
+"askTab"
+).style.display =
+selected === "ask"
+? "block"
+: "none";
+
+});
 
 });
 
 /* SECURITY */
+
 function escapeHtml(text){
 
-  return String(text)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+return String(text)
+
+.replace(/&/g,"&amp;")
+
+.replace(/</g,"&lt;")
+
+.replace(/>/g,"&gt;")
+
+.replace(/"/g,"&quot;")
+
+.replace(/'/g,"&#039;");
+
 }
 
 /* LOAD HISTORY */
+
 renderHistory();
+
 </script>
 
 </body>
