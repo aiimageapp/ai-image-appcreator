@@ -26,12 +26,12 @@ export default async function handler(req, res) {
 
     if (!process.env.HF_TOKEN) {
       return res.status(500).json({
-        error: "HF_TOKEN is not configured in Vercel."
+        error: "HF_TOKEN is missing from Vercel."
       });
     }
 
     const response = await fetch(
-      "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell",
+      "https://router.huggingface.co/fal-ai/black-forest-labs/FLUX.1-schnell",
       {
         method: "POST",
         headers: {
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          inputs: prompt.trim()
+          prompt: prompt.trim()
         })
       }
     );
@@ -48,18 +48,16 @@ export default async function handler(req, res) {
       const errorText = await response.text();
 
       return res.status(response.status).json({
-        error: errorText || "Image generation failed."
+        error: errorText || "Hugging Face image generation failed."
       });
     }
 
-    const imageBuffer = Buffer.from(
-      await response.arrayBuffer()
-    );
+    const image = await response.arrayBuffer();
 
     res.setHeader("Content-Type", "image/png");
     res.setHeader("Cache-Control", "no-store");
 
-    return res.status(200).send(imageBuffer);
+    return res.status(200).send(Buffer.from(image));
 
   } catch (error) {
     return res.status(500).json({
