@@ -3,734 +3,926 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090d">
 <title>AI Creator Studio</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --bg:#08090d;
+  --card:#11131a;
+  --card2:#171923;
+  --border:#272a36;
+  --text:#f7f7fb;
+  --muted:#969aaa;
+  --accent:#8b5cf6;
+  --accent2:#6366f1;
+  --danger:#ef4444;
+}
 
 body{
-  font-family:Arial,sans-serif;
-  background:#080c18;
-  color:#fff;
+  background:
+    radial-gradient(circle at 50% -10%,rgba(124,58,237,.22),transparent 35%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   min-height:100vh;
 }
 
-header{
-  height:64px;
+button,
+textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  width:100%;
+  max-width:1100px;
+  margin:auto;
+  padding:18px;
+}
+
+/* HEADER */
+.header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 18px;
-  border-bottom:1px solid #202940;
-  position:sticky;
-  top:0;
-  background:#080c18;
-  z-index:10;
+  padding:8px 2px 22px;
 }
 
-.logo{font-size:20px;font-weight:bold}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logo{
+  width:40px;
+  height:40px;
+  border-radius:13px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#8b5cf6,#4f46e5);
+  font-size:20px;
+  box-shadow:0 8px 30px rgba(99,102,241,.25);
+}
+
+.brand h1{
+  font-size:19px;
+  letter-spacing:-.4px;
+}
 
 .badge{
-  background:#173b2c;
-  color:#5cf0a1;
-  padding:6px 10px;
-  border-radius:20px;
-  font-size:12px;
+  font-size:10px;
+  font-weight:800;
+  padding:5px 8px;
+  border-radius:999px;
+  background:#17251e;
+  color:#62e69a;
+  border:1px solid #23432f;
 }
 
-main{
-  max-width:700px;
-  margin:auto;
-  padding:25px 16px 90px;
-}
-
-h1{
-  font-size:32px;
-  margin-bottom:8px;
-}
-
-.subtitle{
-  color:#929db3;
-  margin-bottom:22px;
-}
-
+/* TABS */
 .tabs{
   display:flex;
-  gap:8px;
-  margin-bottom:18px;
+  gap:7px;
+  padding:5px;
+  background:#101118;
+  border:1px solid var(--border);
+  border-radius:14px;
+  margin-bottom:22px;
 }
 
 .tab{
   flex:1;
-  padding:13px 5px;
-  border:1px solid #29334b;
-  border-radius:12px;
-  background:#11182a;
-  color:#b8c1d3;
+  border:0;
+  color:var(--muted);
+  background:transparent;
+  padding:11px 8px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:700;
 }
 
 .tab.active{
-  background:#5b4cff;
   color:white;
-  border-color:#5b4cff;
+  background:#242735;
+}
+
+/* HERO */
+.hero{
+  text-align:center;
+  margin:10px auto 25px;
+}
+
+.hero h2{
+  font-size:clamp(30px,7vw,52px);
+  line-height:1.05;
+  letter-spacing:-2px;
+  margin-bottom:10px;
+}
+
+.gradient{
+  background:linear-gradient(90deg,#a78bfa,#818cf8,#c084fc);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.hero p{
+  color:var(--muted);
+  max-width:600px;
+  margin:auto;
+  font-size:14px;
+  line-height:1.6;
+}
+
+/* WORKSPACE */
+.workspace{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 330px;
+  gap:18px;
 }
 
 .panel{
-  background:#11182a;
-  border:1px solid #29334b;
-  border-radius:18px;
+  background:rgba(17,19,26,.88);
+  border:1px solid var(--border);
+  border-radius:22px;
   padding:18px;
+  box-shadow:0 18px 60px rgba(0,0,0,.22);
 }
 
-.hidden{display:none}
-
-label{
-  display:block;
-  font-size:13px;
-  color:#929db3;
-  margin:14px 0 7px;
+.panel-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
 }
 
-textarea,select{
-  width:100%;
-  background:#080c18;
-  color:white;
-  border:1px solid #303b55;
-  border-radius:12px;
-  padding:14px;
+.panel-title h3{
   font-size:15px;
-  outline:none;
+}
+
+.panel-title span{
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* PROMPT */
+.prompt-box{
+  position:relative;
 }
 
 textarea{
-  height:120px;
+  width:100%;
+  min-height:170px;
   resize:vertical;
+  padding:17px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:#0c0e14;
+  color:white;
+  outline:none;
+  line-height:1.6;
+  font-size:14px;
+  transition:.2s;
 }
 
+textarea:focus{
+  border-color:#7556d9;
+  box-shadow:0 0 0 3px rgba(139,92,246,.1);
+}
+
+textarea::placeholder{
+  color:#646877;
+}
+
+.char{
+  position:absolute;
+  right:12px;
+  bottom:10px;
+  color:#666b7b;
+  font-size:10px;
+}
+
+/* QUICK PROMPTS */
 .quick{
   display:flex;
   gap:7px;
   overflow-x:auto;
-  margin:12px 0;
+  padding:12px 0 2px;
+  scrollbar-width:none;
+}
+
+.quick::-webkit-scrollbar{
+  display:none;
 }
 
 .quick button{
-  white-space:nowrap;
-  padding:9px 12px;
-  border-radius:20px;
-  border:1px solid #303b55;
-  background:#151e32;
-  color:#d8deeb;
+  flex-shrink:0;
+  border:1px solid var(--border);
+  background:#151720;
+  color:#aaaebe;
+  padding:8px 11px;
+  border-radius:999px;
+  font-size:11px;
 }
 
-.row{
-  display:flex;
-  gap:10px;
-}
-
-.row>div{flex:1}
-
-.primary{
-  width:100%;
-  margin-top:18px;
-  padding:15px;
-  border:0;
-  border-radius:13px;
-  background:#5b4cff;
+.quick button:hover{
+  border-color:#7659d8;
   color:white;
-  font-size:16px;
-  font-weight:bold;
 }
 
-.primary:disabled{
-  opacity:.6;
+/* CONTROLS */
+.control-section{
+  margin-top:20px;
 }
 
-.preview{
-  margin-top:18px;
-  border:1px dashed #3a4660;
-  border-radius:16px;
-  min-height:220px;
+.label{
+  color:#b7bac8;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:9px;
+  display:block;
+}
+
+.options{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.option{
+  border:1px solid var(--border);
+  background:#14161e;
+  color:#aeb1bf;
+  border-radius:11px;
+  padding:9px 12px;
+  font-size:11px;
+}
+
+.option.active{
+  border-color:#8061e6;
+  background:rgba(124,58,237,.15);
+  color:white;
+}
+
+/* GENERATE */
+.generate{
+  width:100%;
+  margin-top:20px;
+  border:0;
+  border-radius:15px;
+  padding:15px;
+  color:white;
+  font-weight:800;
+  font-size:14px;
+  background:linear-gradient(135deg,#8b5cf6,#4f46e5);
+  box-shadow:0 12px 30px rgba(99,102,241,.22);
+  transition:.2s;
+}
+
+.generate:hover{
+  transform:translateY(-1px);
+}
+
+.generate:disabled{
+  opacity:.65;
+  cursor:not-allowed;
+  transform:none;
+}
+
+/* RESULT */
+.result{
+  min-height:360px;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:15px;
-  text-align:center;
-  color:#8994aa;
   overflow:hidden;
+  background:#0b0d13;
+  border:1px solid var(--border);
+  border-radius:18px;
+  position:relative;
 }
 
-.preview img{
-  width:100%;
-  max-height:650px;
-  object-fit:contain;
-  border-radius:14px;
-}
-
-.loading{
-  display:flex;
+.result.empty{
   flex-direction:column;
-  gap:12px;
-  align-items:center;
+  color:#777b8b;
+  text-align:center;
+  padding:30px;
+}
+
+.empty-icon{
+  font-size:42px;
+  margin-bottom:12px;
+}
+
+.empty h3{
+  color:#c9cbd5;
+  font-size:15px;
+  margin-bottom:6px;
+}
+
+.empty p{
+  font-size:12px;
+  line-height:1.5;
+}
+
+.result img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:17px;
+}
+
+.result-actions{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+
+.action{
+  flex:1;
+  padding:11px;
+  border-radius:11px;
+  border:1px solid var(--border);
+  background:#151720;
+  color:white;
+  font-size:12px;
+  font-weight:700;
+}
+
+/* LOADING */
+.loading{
+  text-align:center;
+  padding:30px;
 }
 
 .spinner{
-  width:34px;
-  height:34px;
-  border:4px solid #303a55;
-  border-top-color:#7b6cff;
+  width:42px;
+  height:42px;
+  border:3px solid #292c38;
+  border-top-color:#8b5cf6;
   border-radius:50%;
   animation:spin 1s linear infinite;
+  margin:0 auto 15px;
+}
+
+.loading h3{
+  font-size:14px;
+  margin-bottom:5px;
+}
+
+.loading p{
+  color:var(--muted);
+  font-size:11px;
 }
 
 @keyframes spin{
   to{transform:rotate(360deg)}
 }
 
-.actions{
+/* HISTORY */
+.history{
+  margin-top:20px;
+}
+
+.history-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.history-card{
+  overflow:hidden;
+  border-radius:13px;
+  border:1px solid var(--border);
+  background:#11131a;
+}
+
+.history-card img{
+  width:100%;
+  aspect-ratio:1;
+  object-fit:cover;
+  display:block;
+}
+
+.history-card p{
+  padding:8px;
+  font-size:10px;
+  color:#a8abb8;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* INFO */
+.info{
   display:flex;
-  gap:8px;
-  margin-top:12px;
-}
-
-.actions button{
-  flex:1;
+  gap:10px;
+  align-items:flex-start;
   padding:12px;
-  border-radius:10px;
-  border:1px solid #303b55;
-  background:#151e32;
-  color:white;
-}
-
-.notice{
   margin-top:15px;
-  padding:12px;
-  border-radius:12px;
-  background:#171f34;
-  color:#9faabe;
-  font-size:12px;
+  background:#10131a;
+  border:1px solid var(--border);
+  border-radius:13px;
+  color:#858998;
+  font-size:10px;
   line-height:1.5;
 }
 
-.history{
-  margin-top:25px;
+/* MOBILE */
+@media(max-width:800px){
+  .workspace{
+    grid-template-columns:1fr;
+  }
+
+  .hero h2{
+    font-size:35px;
+  }
+
+  .result{
+    min-height:300px;
+  }
 }
 
-.history h2{
-  font-size:19px;
-  margin-bottom:12px;
-}
+@media(max-width:480px){
+  .app{
+    padding:12px;
+  }
 
-.historyItem{
-  background:#11182a;
-  border:1px solid #29334b;
-  border-radius:12px;
-  padding:12px;
-  margin-bottom:8px;
-  font-size:13px;
-  color:#b7c0d2;
-}
+  .panel{
+    padding:13px;
+    border-radius:18px;
+  }
 
-.bottom{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  height:48px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#0d1322;
-  border-top:1px solid #29334b;
-  font-size:12px;
-  color:#737f95;
+  .history-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  textarea{
+    min-height:145px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo">✨ AI Creator</div>
-  <div class="badge">FREE</div>
-</header>
+<div class="app">
 
-<main>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="brand">
+      <div class="logo">✦</div>
+      <h1>AI Creator Studio</h1>
+      <span class="badge">FREE</span>
+    </div>
+  </header>
 
-<h1>Create With AI</h1>
-<p class="subtitle">Turn your ideas into real AI-generated images.</p>
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" data-tab="image">🎨 Image</button>
+    <button class="tab" data-tab="video">🎬 Video</button>
+    <button class="tab" data-tab="ask">💬 Ask AI</button>
+  </div>
 
-<div class="tabs">
-  <button class="tab active" onclick="showTab('image',this)">🖼️ Image</button>
-  <button class="tab" onclick="showTab('video',this)">🎬 Video</button>
-  <button class="tab" onclick="showTab('ask',this)">💬 Ask AI</button>
-</div>
+  <!-- HERO -->
+  <section class="hero">
+    <h2>Create anything with <span class="gradient">AI</span></h2>
+    <p>
+      Turn your ideas into beautiful images with a simple prompt.
+      Describe what you imagine and let AI create it.
+    </p>
+  </section>
 
-<section id="image" class="panel">
+  <!-- IMAGE WORKSPACE -->
+  <div id="imageTab">
 
-<label>Describe your image</label>
+    <div class="workspace">
 
-<textarea
-  id="prompt"
-  placeholder="Example: A footballer celebrating a goal in a huge stadium at night..."
-></textarea>
+      <!-- LEFT -->
+      <section class="panel">
 
-<div class="quick">
-  <button onclick="quick('Football')">⚽ Football</button>
-  <button onclick="quick('City')">🌆 Future City</button>
-  <button onclick="quick('Fantasy')">🐉 Fantasy</button>
-  <button onclick="quick('Robot')">🤖 Robot</button>
-</div>
+        <div class="panel-title">
+          <h3>✨ Describe your image</h3>
+          <span>Text to Image</span>
+        </div>
 
-<div class="row">
+        <div class="prompt-box">
+          <textarea
+            id="prompt"
+            maxlength="1200"
+            placeholder="Example: A cinematic portrait of a young African man wearing a black jacket, standing in a futuristic Lagos city at night, neon lights, realistic photography..."
+          ></textarea>
 
-<div>
-<label>Style</label>
+          <div class="char">
+            <span id="count">0</span>/1200
+          </div>
+        </div>
 
-<select id="style">
-  <option>Realistic</option>
-  <option>Cinematic</option>
-  <option>Anime</option>
-  <option>Cartoon</option>
-  <option>3D</option>
-  <option>Fantasy</option>
-</select>
-</div>
+        <div class="quick">
+          <button data-prompt="A cinematic portrait, dramatic lighting, ultra realistic photography">Portrait</button>
+          <button data-prompt="A futuristic African city at night, neon lights, cinematic atmosphere">Futuristic</button>
+          <button data-prompt="A luxury product advertisement, studio lighting, premium commercial photography">Product Ad</button>
+          <button data-prompt="A beautiful fantasy landscape, magical atmosphere, highly detailed">Fantasy</button>
+        </div>
 
-<div>
-<label>Ratio</label>
+        <!-- STYLE -->
+        <div class="control-section">
+          <span class="label">Visual style</span>
 
-<select id="ratio">
-  <option value="1:1">1:1</option>
-  <option value="16:9">16:9</option>
-  <option value="9:16">9:16</option>
-  <option value="4:3">4:3</option>
-</select>
-</div>
+          <div class="options" id="styles">
+            <button class="option active" data-style="">Natural</button>
+            <button class="option" data-style="photorealistic photography">Photorealistic</button>
+            <button class="option" data-style="cinematic photography">Cinematic</button>
+            <button class="option" data-style="digital art">Digital Art</button>
+            <button class="option" data-style="3D render">3D</button>
+            <button class="option" data-style="anime illustration">Anime</button>
+          </div>
+        </div>
 
-</div>
+        <!-- RATIO -->
+        <div class="control-section">
+          <span class="label">Aspect ratio</span>
 
-<button id="createButton" class="primary" onclick="createImage()">
-✨ Create Image
-</button>
+          <div class="options" id="ratios">
+            <button class="option active" data-ratio="1:1">1:1</button>
+            <button class="option" data-ratio="4:3">4:3</button>
+            <button class="option" data-ratio="3:4">3:4</button>
+            <button class="option" data-ratio="16:9">16:9</button>
+            <button class="option" data-ratio="9:16">9:16</button>
+          </div>
+        </div>
 
-<div id="preview" class="preview">
-  Your AI-generated image will appear here.
-</div>
+        <button class="generate" id="generate">
+          ✨ Generate Image
+        </button>
 
-<div class="notice">
-  Your image request is sent securely through your Vercel backend. Your Hugging Face token is never placed in this page.
-</div>
+        <div class="info">
+          <span>🔒</span>
+          <span>Your Hugging Face API token stays on the server. It is never placed inside this page.</span>
+        </div>
 
-</section>
+      </section>
 
-<section id="video" class="panel hidden">
+      <!-- RIGHT -->
+      <section class="panel">
 
-<label>Describe your video</label>
+        <div class="panel-title">
+          <h3>🖼️ Result</h3>
+          <span id="status">Ready</span>
+        </div>
 
-<textarea
-  id="videoPrompt"
-  placeholder="Describe the video you want to create..."
-></textarea>
+        <div class="result empty" id="result">
+          <div class="empty-icon">✦</div>
+          <h3>Your creation will appear here</h3>
+          <p>Write a prompt and tap Generate Image.</p>
+        </div>
 
-<label>Style</label>
+        <div class="result-actions" id="actions" style="display:none;">
+          <button class="action" id="download">⬇ Download</button>
+          <button class="action" id="save">♡ Save</button>
+          <button class="action" id="newImage">＋ New</button>
+        </div>
 
-<select id="videoStyle">
-  <option>Cinematic</option>
-  <option>Realistic</option>
-  <option>Anime</option>
-  <option>3D</option>
-</select>
+      </section>
 
-<button class="primary" onclick="createVideo()">
-🎬 Create Video Project
-</button>
+    </div>
 
-<div id="videoResult" class="preview">
-  Your video project will appear here.
-</div>
+    <!-- HISTORY -->
+    <section class="panel history">
+      <div class="panel-title">
+        <h3>🕘 Recent creations</h3>
+        <span id="clearHistory">Clear</span>
+      </div>
 
-</section>
+      <div class="history-grid" id="historyGrid">
+        <div style="color:#6f7380;font-size:11px;padding:10px;">
+          Your generated images will appear here.
+        </div>
+      </div>
+    </section>
 
-<section id="ask" class="panel hidden">
+  </div>
 
-<label>Ask AI</label>
+  <!-- VIDEO TAB -->
+  <div id="videoTab" style="display:none;">
+    <section class="panel" style="text-align:center;padding:50px 20px;">
+      <div style="font-size:45px;margin-bottom:15px;">🎬</div>
+      <h3 style="margin-bottom:8px;">AI Video</h3>
+      <p style="color:#888;font-size:13px;">
+        Video generation is coming soon.
+      </p>
+    </section>
+  </div>
 
-<textarea
-  id="question"
-  placeholder="Ask a question..."
-></textarea>
+  <!-- ASK AI TAB -->
+  <div id="askTab" style="display:none;">
+    <section class="panel" style="text-align:center;padding:50px 20px;">
+      <div style="font-size:45px;margin-bottom:15px;">💬</div>
+      <h3 style="margin-bottom:8px;">Ask AI</h3>
+      <p style="color:#888;font-size:13px;">
+        AI chat will be added soon.
+      </p>
+    </section>
+  </div>
 
-<button class="primary" onclick="askAI()">
-💬 Get Answer
-</button>
-
-<div id="answer" class="preview">
-  Your answer will appear here.
-</div>
-
-</section>
-
-<div class="history">
-  <h2>🕘 Recent Creations</h2>
-  <div id="historyList">No creations yet.</div>
-</div>
-
-</main>
-
-<div class="bottom">
-  AI Creator Studio • Free Creator Mode
 </div>
 
 <script>
-
 const API_URL =
-"https://ai-image-appcreator.vercel.app/api/generate";
+  "https://ai-image-appcreator.vercel.app/api/generate";
 
+const promptBox = document.getElementById("prompt");
+const count = document.getElementById("count");
+const generateBtn = document.getElementById("generate");
+const result = document.getElementById("result");
+const actions = document.getElementById("actions");
+const statusText = document.getElementById("status");
 
-function showTab(id,button){
+let selectedStyle = "";
+let selectedRatio = "1:1";
+let currentImage = null;
 
-  document.querySelectorAll(".panel").forEach(panel=>{
-    panel.classList.add("hidden");
+/* CHARACTER COUNT */
+promptBox.addEventListener("input", () => {
+  count.textContent = promptBox.value.length;
+});
+
+/* QUICK PROMPTS */
+document.querySelectorAll(".quick button").forEach(button => {
+  button.addEventListener("click", () => {
+    promptBox.value = button.dataset.prompt;
+    count.textContent = promptBox.value.length;
+    promptBox.focus();
   });
+});
 
-  document.getElementById(id).classList.remove("hidden");
+/* STYLE */
+document.querySelectorAll("#styles .option").forEach(button => {
+  button.addEventListener("click", () => {
 
-  document.querySelectorAll(".tab").forEach(tab=>{
-    tab.classList.remove("active");
+    document
+      .querySelectorAll("#styles .option")
+      .forEach(x => x.classList.remove("active"));
+
+    button.classList.add("active");
+    selectedStyle = button.dataset.style;
   });
+});
 
-  button.classList.add("active");
-}
+/* RATIO */
+document.querySelectorAll("#ratios .option").forEach(button => {
+  button.addEventListener("click", () => {
 
+    document
+      .querySelectorAll("#ratios .option")
+      .forEach(x => x.classList.remove("active"));
 
-function quick(type){
+    button.classList.add("active");
+    selectedRatio = button.dataset.ratio;
+  });
+});
 
-  const prompts={
-
-    Football:
-    "A professional footballer celebrating a spectacular goal inside a massive modern stadium at night, dramatic stadium lights, energetic crowd, realistic photography",
-
-    City:
-    "A futuristic African city at night with glowing skyscrapers, flying cars, beautiful architecture, cinematic lighting, highly detailed",
-
-    Fantasy:
-    "An epic fantasy warrior standing on a mountain with dragons flying across the sky, dramatic clouds, cinematic lighting, highly detailed",
-
-    Robot:
-    "A futuristic humanoid robot standing in a neon city at night, cinematic lighting, highly detailed, realistic"
-  };
-
-  document.getElementById("prompt").value=prompts[type];
-}
-
+/* GENERATE */
+generateBtn.addEventListener("click", createImage);
 
 async function createImage(){
 
-  const prompt =
-    document.getElementById("prompt").value.trim();
-
-  const style =
-    document.getElementById("style").value;
-
-  const ratio =
-    document.getElementById("ratio").value;
-
-  const preview =
-    document.getElementById("preview");
-
-  const button =
-    document.getElementById("createButton");
+  const prompt = promptBox.value.trim();
 
   if(!prompt){
-
-    preview.innerHTML =
-    "⚠️ Please describe the image you want first.";
-
+    alert("Please describe the image you want to create.");
+    promptBox.focus();
     return;
   }
 
-  button.disabled=true;
-  button.textContent="⏳ Creating...";
+  let finalPrompt = prompt;
 
-  preview.innerHTML=`
+  if(selectedStyle){
+    finalPrompt += ", " + selectedStyle;
+  }
+
+  generateBtn.disabled = true;
+  generateBtn.textContent = "⏳ Creating...";
+  statusText.textContent = "Generating";
+
+  result.className = "result";
+  result.innerHTML = `
     <div class="loading">
       <div class="spinner"></div>
-      <div>Creating your AI image...</div>
-      <small>This may take a little while.</small>
+      <h3>Creating your image...</h3>
+      <p>AI is turning your idea into an image.</p>
     </div>
   `;
 
+  actions.style.display = "none";
+
   try{
 
-    const enhancedPrompt =
-      `${prompt}. Style: ${style}. High quality, detailed image.`;
-
-    const response =
-      await fetch(API_URL,{
-
-        method:"POST",
-
-        headers:{
-          "Content-Type":"application/json"
-        },
-
-        body:JSON.stringify({
-          prompt:enhancedPrompt,
-          ratio:ratio
-        })
-
-      });
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        prompt: finalPrompt,
+        ratio: selectedRatio
+      })
+    });
 
     if(!response.ok){
 
-      let message="Image generation failed.";
+      let message = "Image generation failed.";
 
       try{
-        const data=await response.json();
+        const data = await response.json();
 
         if(data.error){
-          message=data.error;
+          message = data.error;
         }
       }catch(e){}
 
       throw new Error(message);
     }
 
-    const blob =
-      await response.blob();
+    const blob = await response.blob();
 
-    if(!blob.type.startsWith("image/")){
+    currentImage = URL.createObjectURL(blob);
 
-      throw new Error(
-        "The server did not return an image."
-      );
-    }
+    result.className = "result";
 
-    const imageURL =
-      URL.createObjectURL(blob);
-
-    preview.innerHTML=`
-
-      <div style="width:100%">
-
-        <img
-          src="${imageURL}"
-          alt="AI generated image"
-        >
-
-        <div class="actions">
-
-          <button onclick="downloadImage('${imageURL}')">
-            ⬇️ Download
-          </button>
-
-          <button onclick="saveHistory()">
-            💾 Save
-          </button>
-
-        </div>
-
-      </div>
+    result.innerHTML = `
+      <img
+        src="${currentImage}"
+        alt="AI generated image"
+      />
     `;
 
-    window.currentImageURL=imageURL;
+    actions.style.display = "flex";
+    statusText.textContent = "Complete";
 
-    saveHistory();
+    saveToHistory(currentImage, prompt);
 
   }catch(error){
 
-    preview.innerHTML=`
+    console.error(error);
 
-      <div>
+    result.className = "result empty";
 
-        <strong>❌ Generation failed</strong>
-
-        <p style="margin-top:10px;color:#aab4c8">
-          ${escapeHTML(error.message)}
-        </p>
-
-      </div>
-
+    result.innerHTML = `
+      <div class="empty-icon">⚠️</div>
+      <h3>Generation failed</h3>
+      <p>${escapeHtml(error.message)}</p>
     `;
+
+    statusText.textContent = "Error";
 
   }finally{
 
-    button.disabled=false;
-    button.textContent="✨ Create Image";
-
+    generateBtn.disabled = false;
+    generateBtn.textContent = "✨ Generate Image";
   }
 }
 
+/* DOWNLOAD */
+document.getElementById("download").addEventListener("click", () => {
 
-function downloadImage(url){
+  if(!currentImage) return;
 
-  const link=document.createElement("a");
+  const link = document.createElement("a");
 
-  link.href=url;
-  link.download="ai-generated-image.png";
+  link.href = currentImage;
+  link.download = "ai-creator-image.png";
 
   document.body.appendChild(link);
-
   link.click();
-
   link.remove();
-}
+});
 
+/* SAVE */
+document.getElementById("save").addEventListener("click", () => {
 
-function saveHistory(){
+  if(!currentImage) return;
 
-  const prompt =
-    document.getElementById("prompt").value.trim();
+  saveToHistory(currentImage, promptBox.value.trim());
 
-  const style =
-    document.getElementById("style").value;
+  alert("Image saved to your recent creations.");
+});
 
-  const ratio =
-    document.getElementById("ratio").value;
+/* NEW */
+document.getElementById("newImage").addEventListener("click", () => {
 
-  if(!prompt)return;
+  promptBox.value = "";
+  count.textContent = "0";
+
+  result.className = "result empty";
+
+  result.innerHTML = `
+    <div class="empty-icon">✦</div>
+    <h3>Your creation will appear here</h3>
+    <p>Write a prompt and tap Generate Image.</p>
+  `;
+
+  actions.style.display = "none";
+  statusText.textContent = "Ready";
+
+  promptBox.focus();
+});
+
+/* HISTORY */
+function saveToHistory(image, prompt){
 
   let history =
-    JSON.parse(
-      localStorage.getItem("aiCreatorHistory") || "[]"
-    );
+    JSON.parse(localStorage.getItem("aiCreatorHistory") || "[]");
 
   history.unshift({
-    prompt:prompt,
-    style:style,
-    ratio:ratio,
-    date:new Date().toLocaleString()
+    image,
+    prompt,
+    date: Date.now()
   });
 
-  history=history.slice(0,10);
+  history = history.slice(0, 6);
 
   localStorage.setItem(
     "aiCreatorHistory",
     JSON.stringify(history)
   );
 
-  loadHistory();
+  renderHistory();
 }
 
+function renderHistory(){
 
-function loadHistory(){
+  const grid = document.getElementById("historyGrid");
 
-  const list =
-    document.getElementById("historyList");
-
-  const history =
-    JSON.parse(
-      localStorage.getItem("aiCreatorHistory") || "[]"
-    );
+  let history =
+    JSON.parse(localStorage.getItem("aiCreatorHistory") || "[]");
 
   if(!history.length){
 
-    list.innerHTML="No creations yet.";
-
-    return;
-  }
-
-  list.innerHTML =
-    history.map(item=>`
-
-      <div class="historyItem">
-
-        <strong>
-          ✨ ${escapeHTML(item.style)}
-          • ${escapeHTML(item.ratio)}
-        </strong>
-
-        <br><br>
-
-        ${escapeHTML(item.prompt)}
-
+    grid.innerHTML = `
+      <div style="color:#6f7380;font-size:11px;padding:10px;">
+        Your generated images will appear here.
       </div>
-
-    `).join("");
-}
-
-
-function createVideo(){
-
-  const prompt =
-    document.getElementById("videoPrompt").value.trim();
-
-  const style =
-    document.getElementById("videoStyle").value;
-
-  if(!prompt){
-
-    document.getElementById("videoResult").innerHTML=
-    "⚠️ Please describe your video first.";
+    `;
 
     return;
   }
 
-  document.getElementById("videoResult").innerHTML=`
-
-    <div>
-
-      <h3>🎬 Video Project</h3>
-
-      <p style="margin-top:12px">
-        Style: ${escapeHTML(style)}
-      </p>
-
-      <p style="margin-top:12px;color:#aab4c8">
-        ${escapeHTML(prompt)}
-      </p>
-
-      <p style="margin-top:15px;color:#8792a8">
-        Video generation will be connected separately.
-      </p>
-
+  grid.innerHTML = history.map(item => `
+    <div class="history-card">
+      <img src="${item.image}" alt="Saved creation">
+      <p>${escapeHtml(item.prompt)}</p>
     </div>
-
-  `;
+  `).join("");
 }
 
+document.getElementById("clearHistory").addEventListener("click", () => {
 
-function askAI(){
+  localStorage.removeItem("aiCreatorHistory");
+  renderHistory();
 
-  const question =
-    document.getElementById("question").value.trim();
+});
 
-  if(!question){
+/* TABS */
+document.querySelectorAll(".tab").forEach(tab => {
 
-    document.getElementById("answer").innerHTML=
-    "⚠️ Please enter a question.";
+  tab.addEventListener("click", () => {
 
-    return;
-  }
+    document
+      .querySelectorAll(".tab")
+      .forEach(x => x.classList.remove("active"));
 
-  document.getElementById("answer").innerHTML=`
+    tab.classList.add("active");
 
-    <div>
+    const selected = tab.dataset.tab;
 
-      <h3>💬 AI Assistant</h3>
+    document.getElementById("imageTab").style.display =
+      selected === "image" ? "block" : "none";
 
-      <p style="margin-top:12px">
-        Your question was received:
-      </p>
+    document.getElementById("videoTab").style.display =
+      selected === "video" ? "block" : "none";
 
-      <div class="notice">
-        ${escapeHTML(question)}
-      </div>
+    document.getElementById("askTab").style.display =
+      selected === "ask" ? "block" : "none";
+  });
 
-      <p style="margin-top:15px;color:#8792a8">
-        Live AI answers will be connected separately.
-      </p>
+});
 
-    </div>
+/* SECURITY */
+function escapeHtml(text){
 
-  `;
-}
-
-
-function escapeHTML(text){
-
-  return text
+  return String(text)
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
@@ -738,9 +930,8 @@ function escapeHTML(text){
     .replace(/'/g,"&#039;");
 }
 
-
-loadHistory();
-
+/* LOAD HISTORY */
+renderHistory();
 </script>
 
 </body>
